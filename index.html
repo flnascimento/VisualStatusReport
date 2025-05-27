@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Setores</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #121212;
+      color: #ffffff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .menu {
+      background-color: #1e1e1e;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      width: 200px;
+    }
+
+    .logos {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .logos img {
+      max-width: 120px;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .menu h1 {
+      font-size: 2rem;
+      color: #00ffd0;
+      margin-bottom: 1rem;
+      padding-top: 0.5rem;
+    }
+
+    .menu button {
+      background-color: transparent;
+      border: 2px solid #00ffd0;
+      color: #00ffd0;
+      padding: 0.8rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      width: 100%;
+    }
+
+    .menu button:hover {
+      background-color: #00ffd0;
+      color: #121212;
+    }
+
+    .menu button.ativo {
+      background-color: #00ffd0;
+      color: #121212;
+    }
+
+    .pontos-area {
+      margin-top: 2rem;
+      width: 100%;
+      text-align: center;
+    }
+
+    .pontos-area h2 {
+      color: #ffffff;
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .pontos {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem;
+      justify-items: center;
+    }
+
+    .ponto {
+      width: 30px;
+      height: 30px;
+      background-color: transparent;
+      border: 2px solid #00ffd0;
+      border-radius: 50%;
+      color: #00ffd0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      transition: background-color 0.3s, color 0.3s;
+      cursor: pointer;
+    }
+
+    .ponto:hover {
+      background-color: #00ffd0;
+      color: #121212;
+    }
+
+    .ponto.ativo {
+      background-color: #00ffd0;
+      color: #121212;
+    }
+
+    .content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: start;
+      padding: 2rem;
+    }
+
+    .report-title {
+      font-size: 2rem;
+      color: #00ffd0;
+      margin-bottom: 1.5rem;
+    }
+
+    .image-container {
+      background-color: #1e1e1e;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      width: 95%;
+      text-align: center;
+    }
+
+    .image-container img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      max-height: 600px;
+    }
+
+    .legenda {
+      margin-top: 1.5rem;
+      padding-top: 0.8rem;
+      border-top: 1px solid #2a2a2a;
+      font-size: 1.1rem;
+      color: #00ffd0;
+      text-align: center;
+      width: 95%;
+    }
+
+    #navButtons {
+      margin-top: 1rem;
+      display: none;
+      gap: 1rem;
+    }
+
+    #navButtons button {
+      background-color: transparent;
+      border: 2px solid #00ffd0;
+      color: #00ffd0;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    #navButtons button:hover {
+      background-color: #00ffd0;
+      color: #121212;
+    }
+
+    #mensagemSetor {
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: #cccccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="menu">
+    <div class="logos">
+      <img src="logos/arvo.png" alt="Logo Arvo" />
+      <img src="logos/alares.png" alt="Logo Alares" />
+    </div>
+    <h1>SETOR</h1>
+    <button onclick="trocarImagem('a', this)">SETOR A</button>
+    <button onclick="trocarImagem('b', this)">SETOR B</button>
+    <button onclick="trocarImagem('c', this)">SETOR C</button>
+    <button onclick="trocarImagem('d', this)">SETOR D</button>
+
+    <div class="pontos-area">
+      <h2 id="tituloPontos" style="display: none;">Pontos</h2>
+      <div id="pontosContainer" class="pontos"></div>
+      <div id="mensagemSetor">Selecione o setor</div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="report-title">Visual Status Report</div>
+    <div class="image-container">
+      <img id="setorImagem" src="setores/a.png" alt="Imagem do Setor">
+    </div>
+    <div class="legenda" id="legendaImagem"></div>
+
+    <div id="navButtons">
+      <button onclick="navegarImagem(-1)">Anterior</button>
+      <button onclick="navegarImagem(1)">Próxima</button>
+    </div>
+  </div>
+
+  <script>
+    const pontosSetores = { a: 13, b: 4, c: 8, d: 9 };
+    let imagemAtual = null;
+    let setorAtual = null;
+    let pontoAtual = null;
+    let botaoSelecionado = null;
+
+    function trocarImagem(setor, botao) {
+      if (setorAtual === setor) {
+        setorAtual = null;
+        pontoAtual = null;
+        imagemAtual = null;
+        botao.classList.remove('ativo');
+        botaoSelecionado = null;
+        document.getElementById('pontosContainer').innerHTML = '';
+        document.getElementById('tituloPontos').style.display = 'none';
+        document.getElementById('mensagemSetor').style.display = 'block';
+        document.getElementById('setorImagem').src = 'setores/a.png';
+        document.getElementById('legendaImagem').textContent = '';
+        document.getElementById('navButtons').style.display = 'none';
+        return;
+      }
+
+      if (botaoSelecionado) botaoSelecionado.classList.remove('ativo');
+      botao.classList.add('ativo');
+      botaoSelecionado = botao;
+
+      setorAtual = setor;
+      pontoAtual = null;
+      imagemAtual = null;
+
+      document.getElementById('setorImagem').src = `setores/${setor}.png`;
+      document.getElementById('setorImagem').alt = `Imagem do Setor ${setor.toUpperCase()}`;
+      document.getElementById('legendaImagem').textContent = '';
+      document.getElementById('mensagemSetor').style.display = 'none';
+      document.getElementById('navButtons').style.display = 'none';
+      gerarPontos(setor);
+    }
+
+    function gerarPontos(setor) {
+      const container = document.getElementById('pontosContainer');
+      container.innerHTML = '';
+      document.getElementById('tituloPontos').style.display = 'block';
+
+      for (let i = 1; i <= pontosSetores[setor]; i++) {
+        const ponto = document.createElement('div');
+        ponto.classList.add('ponto');
+        ponto.innerText = i;
+        ponto.onclick = () => {
+          document.querySelectorAll('.ponto').forEach(p => p.classList.remove('ativo'));
+          ponto.classList.add('ativo');
+          abrirImagem(setor, i);
+        };
+        container.appendChild(ponto);
+      }
+    }
+
+    function abrirImagem(setor, ponto) {
+      setorAtual = setor;
+      pontoAtual = ponto;
+      imagemAtual = null;
+      buscarPrimeiraImagem(22);
+    }
+
+    function buscarPrimeiraImagem(numero) {
+      if (numero > 99) {
+        document.getElementById('setorImagem').src = 'pontos/empty.jpg';
+        document.getElementById('setorImagem').alt = 'Imagem não disponível';
+        document.getElementById('navButtons').style.display = 'none';
+        document.getElementById('legendaImagem').textContent = 'Nenhuma imagem encontrada';
+        return;
+      }
+
+      const caminho = `pontos/${setorAtual}${pontoAtual}/w${numero}.jpg`;
+      const teste = new Image();
+
+      teste.onload = () => {
+        imagemAtual = numero;
+        exibirImagemAtual();
+        document.getElementById('navButtons').style.display = 'flex';
+      };
+
+      teste.onerror = () => {
+        buscarPrimeiraImagem(numero + 1);
+      };
+
+      teste.src = caminho;
+    }
+
+    function exibirImagemAtual() {
+      const caminho = `pontos/${setorAtual}${pontoAtual}/w${imagemAtual}.jpg`;
+      document.getElementById('setorImagem').src = caminho;
+      document.getElementById('setorImagem').alt = `Ponto ${pontoAtual} do Setor ${setorAtual.toUpperCase()} - w${imagemAtual}`;
+      const legenda = `SETOR ${setorAtual.toUpperCase()} - PONTO ${pontoAtual} - SEMANA ${imagemAtual}`;
+      document.getElementById('legendaImagem').textContent = legenda;
+    }
+
+    function navegarImagem(direcao) {
+      if (imagemAtual === null) return;
+      const proximoNumero = imagemAtual + direcao;
+      if (proximoNumero < 22 || proximoNumero > 99) return;
+      verificarImagem(proximoNumero, direcao);
+    }
+
+    function verificarImagem(numero, direcao) {
+      const caminho = `pontos/${setorAtual}${pontoAtual}/w${numero}.jpg`;
+      const teste = new Image();
+
+      teste.onload = () => {
+        imagemAtual = numero;
+        exibirImagemAtual();
+      };
+
+      teste.onerror = () => {
+        verificarImagem(numero + direcao, direcao);
+      };
+
+      teste.src = caminho;
+    }
+
+    // Estado inicial
+    document.getElementById('pontosContainer').innerHTML = '';
+    document.getElementById('tituloPontos').style.display = 'none';
+    document.getElementById('mensagemSetor').style.display = 'block';
+  </script>
+</body>
+</html>
