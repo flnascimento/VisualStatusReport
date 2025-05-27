@@ -284,7 +284,8 @@
 
     function buscarPrimeiraImagem(numero) {
       if (numero > 99) {
-        document.getElementById('setorImagem').src = 'pontos/empty.png';
+        imagemAtual = null;
+        document.getElementById('setorImagem').src = 'pontos/empty.jpg';
         document.getElementById('setorImagem').alt = 'Imagem não disponível';
         document.getElementById('navButtons').style.display = 'none';
         document.getElementById('legendaImagem').textContent = 'Nenhuma imagem encontrada';
@@ -300,9 +301,7 @@
         document.getElementById('navButtons').style.display = 'flex';
       };
 
-      teste.onerror = () => {
-        buscarPrimeiraImagem(numero + 1);
-      };
+      teste.onerror = () => buscarPrimeiraImagem(numero + 1);
 
       teste.src = caminho;
     }
@@ -332,7 +331,14 @@
       };
 
       teste.onerror = () => {
-        verificarImagem(numero + direcao, direcao);
+        if (numero + direcao > 99 || numero + direcao < 22) {
+          document.getElementById('setorImagem').src = 'pontos/empty.jpg';
+          document.getElementById('setorImagem').alt = 'Imagem não disponível';
+          document.getElementById('navButtons').style.display = 'none';
+          document.getElementById('legendaImagem').textContent = 'Nenhuma imagem encontrada';
+        } else {
+          verificarImagem(numero + direcao, direcao);
+        }
       };
 
       teste.src = caminho;
